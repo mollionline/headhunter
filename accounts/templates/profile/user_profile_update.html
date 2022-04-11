@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row row-cols-2">
+        <div class="col col-6">
+            <h2>Поменять личные данные</h2>
+            <form style="width: 50%" action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'partial/profile_form.html' %}
+                {% include 'partial/user_form.html' %}
+
+                <input type="submit" value="Submit" class="btn btn-success">
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
