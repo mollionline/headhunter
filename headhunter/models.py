@@ -2,6 +2,16 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+CATEGORIES = [
+    ('Medicine', 'Медицина'),
+    ('Production', 'Производство'),
+    ('Information technology', 'Информационные технологий'),
+    ('Marketing', 'Маркетинг'),
+    ('Sales', 'Продажи'),
+    ('Other', 'Другое')
+]
+
+
 class Experiences(models.Model):
     name_company = models.CharField(max_length=1000, null=False, verbose_name='Имя компаний')
     start_date = models.DateField(null=False, blank=True, verbose_name='Дата начало')
@@ -31,6 +41,7 @@ class Resume(models.Model):
     salary = models.CharField(max_length=500, null=True, verbose_name='Желаемая зарплата')
     telegram = models.CharField(max_length=300, null=True, verbose_name='Телеграмм')
     facebook = models.CharField(max_length=300, null=True, verbose_name='Facebook')
+    category = models.CharField(max_length=100, choices=CATEGORIES, verbose_name='Категорий')
     phone = PhoneNumberField(blank=False, verbose_name='Номер телефона', region='KZ', null=True)
     avatar = models.ImageField(null=True, blank=True, upload_to='resume_pics', verbose_name='Фото')
     experience = models.ManyToManyField('headhunter.Experiences', related_name='resume', blank=True)
