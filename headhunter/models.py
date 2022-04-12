@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.fields import related
 from phonenumber_field.modelfields import PhoneNumberField
-
 
 CATEGORIES = [
     ('Medicine', 'Медицина'),
@@ -52,3 +52,34 @@ class Resume(models.Model):
 
     def __str__(self):
         return f'{self.position}'
+
+
+class Vacancy(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='vacancy_user')
+    position = models.CharField(max_length=100, null=False, blank=False, verbose_name='Должность')
+    category = models.CharField(max_length=100, choices=CATEGORIES, verbose_name='Категория')
+    salary = models.IntegerField(null=False, blank=False, verbose_name='Заработная плата')
+    description = models.CharField(max_length=3000, null=False, blank=False, verbose_name='Описание вакансии')
+    min_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Мин кол-во лет опыта')
+    max_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Макс кол-во лет опыта')
+    posted_status = models.BooleanField(null=False, blank=False, verbose_name='Опубликовано')
+    updated_at = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Дата обновления')
+
+
+class Respond(models.Model):
+    vacancy_applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='vacancy_applicant')
+    employer = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='employer')
+    resume = models.ForeignKey('headhunter.Resume', on_delete=models.CASCADE, related_name='respond_resume')
+    vacancy = models.ForeignKey('headhunter.Vacancy', on_delete=models.CASCADE, related_name='respond_vacancy')
+
+
+class RespondMessage(models.Model):
+    respond = models.ForeignKey('headhunter.Respond', on_delete=models.CASCADE, related_name='respond_message')
+    message = models.ForeignKey('headhunter.Message', on_delete=models.CASCADE, related_name='message_text')
+
+
+class Message(models.Model):
+    applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='applicant')
+    text = models.CharField(max_length=3000, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
