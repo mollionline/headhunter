@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -34,6 +35,7 @@ class Educations(models.Model):
 
 
 class Resume(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default='1', related_name='resume_user')
     name = models.CharField(max_length=200, null=False, verbose_name='Имя')
     last_name = models.CharField(max_length=200, null=False, verbose_name='Фамилия')
     email = models.EmailField(max_length=300, null=False, verbose_name='Почта')
