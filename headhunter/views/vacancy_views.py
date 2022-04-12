@@ -5,7 +5,11 @@ from headhunter.models import Vacancy
 
 
 class VacancyListView(ListView):
-    pass
+    template_name = 'vacancy/vacancy_list.html'
+    model = Vacancy
+    ordering = ('-updated_at',)
+    context_object_name = 'vacancies'
+    paginate_by = 6
 
 
 class VacancyDetailsView(DetailView):
