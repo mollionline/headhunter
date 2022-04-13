@@ -7,7 +7,7 @@
         </div>
         <br>
         <div class="vacancy_title">
-            <h1 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h1>
+            <h2 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h2>
         </div>
         <div class="vacancy_user mt-5">
             <a href="{% url 'profile' user.pk %}" id="vacancy_user">{{ vacancy.user.get_full_name }}</a>

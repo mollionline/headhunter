@@ -1,7 +1,11 @@
-from django.views.generic import ListView, DetailView, RedirectView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, RedirectView, DeleteView, CreateView
 
 from headhunter.forms.vacancy_forms import VacancyForm
 from headhunter.models import Vacancy
+from headhunter.helpers import FormView as CustomFormView
 
 
 class VacancyListView(ListView):
@@ -21,7 +25,25 @@ class VacancyDetailsView(DetailView):
         return super().get_context_data(**kwargs, form=VacancyForm())
 
 
-class VacancyCreateView(RedirectView):
+class VacancyCreateView(LoginRequiredMixin, CustomFormView):
+    template_name = 'vacancy/vacancy_create.html'
+    form_class = VacancyForm
+    redirect_url = ''
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            vacancy = form.save(commit=False)
+            vacancy.save()
+            return redirect('vacancy_list')
+        return render(request, self.template_name,
+                      context={
+                          'form': form
+                      }
+                      )
+
+
+class VacancyUpdateView(RedirectView):
     pass
 
 
