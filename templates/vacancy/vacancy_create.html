@@ -5,6 +5,6 @@
     <h2>Ваша вакансия:</h2>
     <form action="{% url 'vacancy_create' %}" method="POST" style="width: 50%">
         {% csrf_token %}
-        {% include 'partial/vacancy/vacancy_form.html' with button_text='Опубликовать' %}
+        {% include 'partial/vacancy/vacancy_form.html' with button_text='Сохранить и опубликовать' %}
     </form>
 {% endblock %}

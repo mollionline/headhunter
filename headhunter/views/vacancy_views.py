@@ -1,7 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, RedirectView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 
 from headhunter.forms.vacancy_forms import VacancyForm
 from headhunter.models import Vacancy
@@ -43,9 +43,20 @@ class VacancyCreateView(LoginRequiredMixin, CustomFormView):
                       )
 
 
-class VacancyUpdateView(RedirectView):
-    pass
+class VacancyUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'vacancy/vacancy_update.html'
+    form_class = VacancyForm
+    model = Vacancy
+
+    def get_success_url(self):
+        return reverse('vacancy_details', kwargs={'pk': self.get_object().pk})
 
 
-class VacancyDeleteView(DeleteView):
-    pass
+class VacancyDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = 'vacancy/vacancy_delete.html'
+    model = Vacancy
+    confirm_deletion = False
+    context_object_name = 'vacancy'
+
+    def get_success_url(self):
+        return reverse('vacancy_list')

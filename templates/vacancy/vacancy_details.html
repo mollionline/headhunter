@@ -22,7 +22,11 @@
             <h6 id="vacancy_updated_date"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
         </div>
     </div>
-
-
-
+    <br>
+    <div>
+        {% if request.user.id == user.id %}
+            <a href="{% url 'vacancy_update' vacancy.pk %}" class="btn btn-success">Корректировать</a>
+            <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить  </a>
+        {% endif %}
+    </div>
 {% endblock %}
