@@ -7,7 +7,7 @@
         </div>
         <br>
         <div class="vacancy_title">
-            <h1 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h1>
+            <h2 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h2>
         </div>
         <div class="vacancy_user mt-5">
             <a href="{% url 'profile' user.pk %}" id="vacancy_user">{{ vacancy.user.get_full_name }}</a>
@@ -22,7 +22,11 @@
             <h6 id="vacancy_updated_date"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
         </div>
     </div>
-
-
-
+    <br>
+    <div>
+        {% if request.user.id == user.id %}
+            <a href="{% url 'vacancy_update' vacancy.pk %}" class="btn btn-success">Корректировать</a>
+            <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить  </a>
+        {% endif %}
+    </div>
 {% endblock %}
