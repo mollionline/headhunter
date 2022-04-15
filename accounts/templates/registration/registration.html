@@ -1,25 +1,43 @@
 {% extends 'base_register.html' %}
 {% block content %}
+    {% load static %}
     <div class="container">
         <div class="register_form">
             <div class="register_form_under_div" style="border: 1px solid #b2a7a7">
-                <h1 style="font-family: 'Cookie', cursive; text-align: center">Регистрация</h1>
+                <h1 style="font-family: 'Cookie', cursive; text-align: center;">Регистрация</h1>
                 <form action="{% url 'register' %}" method="post" class="text-center" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
-                        <select name="categories" id="categories" class="form-control">
-                            {% for user_or_company in categories %}
-                                <option value="{{ user_or_company.0 }}" {% if user_or_company.0  == form.user_or_company.value %}
-                                        selected
-                                {% endif %} >{{ user_or_company.1 }} </option>
-                            {% endfor %}
-                        </select>
-                        {% for error in form.user_or_company.errors %}
-                            <p class="invalid-feedback">{{ error }}</p>
-                        {% endfor %}
+                        {% if profile_form.user_or_company.value %}
+                            <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
+                                <input value="False" type="radio" class="btn-check user" name="user_or_company"
+                                       id="btnradio1"
+                                       autocomplete="off">
+                                <label class="btn btn-outline-secondary" for="btnradio1">Соискатель</label>
+
+                                <input value="True" type="radio" class="btn-check company" name="user_or_company" id="btnradio2"
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-secondary" for="btnradio2">Компания</label>
+                            </div>
+
+                        {% else %}
+
+                            <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
+                                <input value="False" type="radio" class="btn-check user" name="user_or_company"
+                                       id="btnradio1"
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-secondary" for="btnradio1">Соискатель</label>
+
+                                <input value="True" type="radio" class="btn-check company" name="user_or_company" id="btnradio2"
+                                       autocomplete="off">
+                                <label class="btn btn-outline-secondary" for="btnradio2">Компания</label>
+                            </div>
+
+                        {% endif %}
                     </div>
                     <div class="form-group">
-                        <input class="form-control {% if form.username.errors %} is-invalid {% endif %}" type="text"
+                        <input class="form-control username {% if form.username.errors %} is-invalid {% endif %}"
+                               type="text"
                                name='username' id="username" value="{{ form.username.value|default:'' }}"
                                placeholder="Логин">
                         {% for error in form.username.errors %}
@@ -75,10 +93,31 @@
                         {% endfor %}
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-info form-control" type="submit">Регистрация</button>
+                        <button class="btn btn-danger form-control" type="submit">Регистрация</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let username_placeholder = $('.username')[0]
+            let btn1 = $('.user')[0]
+            let btn2 = $('.company')[0]
+            $('#btnradio1').click(function (e) {
+                e.preventDefault();
+                username_placeholder.placeholder = 'Логин Соискателя'
+                btn1.value
+
+            })
+            $('#btnradio2').click(function (e) {
+                e.preventDefault();
+                username_placeholder.placeholder = 'Логин Компании'
+                btn2.value
+
+            })
+        })
+    </script>
 {% endblock %}
