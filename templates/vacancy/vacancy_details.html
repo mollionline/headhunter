@@ -2,6 +2,8 @@
 
 {% block content %}
     <div class="container mt-5">
+        <h6><i>Опубликовано: {% if vacancy.posted_status %}
+            Да {% else %} Нет {% endif %} </i></h6>
         <div class="vacancy_salary">
             <span>з/п {{ vacancy.salary|default:'з/п не указано' }} USD</span>
         </div>
@@ -21,12 +23,16 @@
         <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
             <h6 id="vacancy_updated_date"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
         </div>
+        <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
+            <h6 id="vacancy_updated_date"><i>Опубликовано: {% if vacancy.posted_status %}
+                Да {% else %} Нет {% endif %} </i></h6>
+        </div>
     </div>
     <br>
     <div>
-        {% if request.user.id == user.id %}
+        {% if request.user.pk == vacancy.author.pk %}
             <a href="{% url 'vacancy_update' vacancy.pk %}" class="btn btn-success">Корректировать</a>
-            <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить  </a>
+            <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить </a>
         {% endif %}
     </div>
 {% endblock %}

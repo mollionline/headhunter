@@ -50,5 +50,27 @@
         </div>
     </div>
 
+    {% if request.user.profile.user_or_company == True %}
+        Ваши вакансии
+        {% for vacancy in vacancies %}
+            {% if request.user == vacancy.author %}
+                <div class="card" style="width: 100%; margin: 5px">
+                    <div class="card-body" style="height: 13rem">
+                        <h6><i>Опубликовано: {% if vacancy.posted_status %}
+                            Да {% else %} Нет {% endif %} </i></h6>
+                        <h5 class="card-title mt-2">Открытая позиция: {{ vacancy.position }} </h5>
+                        <p class="card-text mt-2">Требуемый опыт: {{ vacancy.min_years_experience }} лет</p>
+                        <p class="card-text mt-2">З/П: {{ vacancy.salary }} USD</p>
+                        <h6 class="card-subtitle mb-2 text-muted"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
+                        <a href="{% url 'vacancy_details' vacancy.pk %}" class="card-link">Подробнее</a>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    {% else %}
+        User
+    {% endif %}
 
 {% endblock %}

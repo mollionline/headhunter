@@ -1,54 +1,104 @@
-<div class="form-group mt-5" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="position" class="form-label">{{ form.position.label }}</label>
-    <input type="text" name="position" id="position" value="{{ form.position.value|default:'' }}">
+<div class="form-group">
+    <input class="form-control {% if form.position.errors %} is-invalid {% endif %}" type="text"
+           name='position' id="position" value="{{ form.position.value|default:'' }}"
+           placeholder="{{ form.position.label }}">
+    {% for error in form.position.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
 </div>
-{% if form.position.errors %}
-    {{ form.position.errors }}
-{% endif %}
-<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="salary" class="form-label">{{ form.salary.label }} /USD</label>
-    <input type="number" name="salary" id="salary" value="{{ form.salary.value|default:'' }}">
-</div>
-{% if form.salary.errors %}
-    {{ form.salary.errors }}
-{% endif %}
-<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="description" class="form-label">{{ form.description.label }}</label>
-    <textarea name="description" id="description" cols="22" rows="4">{{ form.description.value|default:'' }}</textarea>
-</div>
-{% if form.description.errors %}
-    {{ form.description.errors }}
-{% endif %}
-<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="min_years_experience" class="form-label">{{ form.min_years_experience.label }} /лет</label>
-    <input type="number" name="min_years_experience" id="min_years_experience"
-           value="{{ form.min_years_experience.value|default:'' }}">
-</div>
-{% if form.min_years_experience.errors %}
-    {{ form.min_years_experience.errors }}
-{% endif %}
 
-<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="max_years_experience" class="form-label">{{ form.max_years_experience.label }} /лет</label>
-    <input type="number" name="max_years_experience" id="max_years_experience"
-           value="{{ form.max_years_experience.value|default:'' }}">
+<div class="form-group">
+    <input class="form-control {% if form.salary.errors %} is-invalid {% endif %}" type="number"
+           name='salary' id="salary" value="{{ form.salary.value|default:'' }}"
+           placeholder="{{ form.salary.label }}">
+    {% for error in form.salary.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
 </div>
-{% if form.max_years_experience.errors %}
-    {{ form.max_years_experience.errors }}
-{% endif %}
 
-<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
-    <label for="category" class="form-label">{{ form.category.label }}</label>
-    <select name="category" id="category" style="width:30%">
-        {% for item in form.category %}
-            {{ item }}
+<div class="form-group">
+    <textarea class="form-control {% if form.description.errors %} is-invalid {% endif %}" name="description"
+              id="description" cols="22" rows="4"
+              placeholder="{{ form.description.label }}">{{ form.description.value|default:'' }}</textarea>
+    {% for error in form.description.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
+</div>
+
+
+<div class="form-group">
+    <input class="form-control {% if form.min_years_experience.errors %} is-invalid {% endif %}" type="number"
+           name='min_years_experience' id="min_years_experience"
+           value="{{ form.min_years_experience.value|default:'' }}"
+           placeholder="{{ form.min_years_experience.label }}">
+    {% for error in form.min_years_experience.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
+</div>
+
+<div class="form-group">
+    <input class="form-control {% if form.max_years_experience.errors %} is-invalid {% endif %}" type="number"
+           name='max_years_experience' id="max_years_experience"
+           value="{{ form.max_years_experience.value|default:'' }}"
+           placeholder="{{ form.max_years_experience.label }}">
+    {% for error in form.max_years_experience.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
+</div>
+
+<div class="form-group">
+    <select name="category" id="category" class="form-control">
+        {% for category in categories %}
+            <option value="{{ category.0 }}" {% if category.0  == form.category.value %}
+                    selected
+            {% endif %} >{{ category.1 }} </option>
         {% endfor %}
     </select>
-    {% if form.category.errors %}
-        {{ form.category.errors }}
-    {% endif %}
+    {% for error in form.category.errors %}
+        <p class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
 </div>
-<input type="hidden" name="user" value="{{ form.user.value|default:request.user }}">
-<input type="hidden" name="posted_status" value="{{ form.posted_status.value }}">
+
+<div class="form-group">
+    {% if form.posted_status.value %}
+        <div class="form-group">
+            <div class="btn-group form-control" role="group"
+                 aria-label="Basic radio toggle button group">
+                <input value="False" type="radio" class="btn-check" name="posted_status"
+                       id="btnradio1"
+                       autocomplete="off">
+                <label class="btn btn-outline-secondary user" for="btnradio1">Не опубликовано</label>
+
+                <input value="True" type="radio" class="btn-check" name="posted_status" id="btnradio2"
+                       autocomplete="off" checked>
+                <label class="btn btn-outline-secondary company" for="btnradio2">Опубликовано</label>
+            </div>
+        </div>
+    {% else %}
+        <div class="form-group">
+            <div class="btn-group form-control" role="group"
+                 aria-label="Basic radio toggle button group">
+                <input value="False" type="radio" class="btn-check" name="posted_status"
+                       id="btnradio1"
+                       autocomplete="off" checked>
+                <label class="btn btn-outline-secondary user" for="btnradio1">Не опубликовано</label>
+
+                <input value="True" type="radio" class="btn-check" name="posted_status" id="btnradio2"
+                       autocomplete="off">
+                <label class="btn btn-outline-secondary company" for="btnradio2">Опубликовано</label>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {#    <select name="posted_status" id="posted_status" class="form-control">#}
+    {#        {% for choice in choices %}#}
+    {#            <option value="{{ choice.0 }}" {% if choice.0  == form.posted_status.value %}#}
+    {#                    selected#}
+    {#            {% endif %} >{{ choice.1 }} </option>#}
+    {#        {% endfor %}#}
+    {#    </select>#}
+
+</div>
 <input type="submit" class="form-control btn-primary mt-5" value="{{ button_text }}" style="width: 35%">
 
