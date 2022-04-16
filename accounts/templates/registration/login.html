@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container form-auth">
         <div class="row row-cols-2">
-            <div class="col"><img src="{% static 'images_common/login_phone.png' %}" alt=""></div>
+            <div class="col"><img src="{% static 'images_common/logo.png' %}" alt=""></div>
             <div class="col">
                 <h4 style="font-family: 'Cookie', cursive; text-align: center; font-size: 35px">Head! Hunter</h4>
                 <form action="{% url 'login' %}{% if next %}?next={{ next }}{% endif %}" method="post"
@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-6 py-3">
                         У вас еще нету аккаунта?
-                        <a class="btn btn-outline-primary" aria-current="page"
+                        <a class="btn btn-outline-danger" aria-current="page"
                            href="{% url 'register' %}">Зарегистрироваться</a>
                     </div>
 

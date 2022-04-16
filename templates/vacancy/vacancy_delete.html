@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5" style="width: 50%;">
+        <div>
+             <h3>Вы уверены, что хотите удалить вакансию "{{ vacancy.position }}"?</h3>
+        </div>
+        <form action="{% url 'vacancy_delete' vacancy.pk %}" method="POST">
+            {% csrf_token %}
+            <input class="mt-5 form-control btn-danger" type="submit" value="Удалить">
+        </form>
+        <br>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<div class="form-group mt-5" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="position" class="form-label">{{ form.position.label }}</label>
+    <input type="text" name="position" id="position" value="{{ form.position.value|default:'' }}">
+</div>
+{% if form.position.errors %}
+    {{ form.position.errors }}
+{% endif %}
+<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="salary" class="form-label">{{ form.salary.label }} /USD</label>
+    <input type="number" name="salary" id="salary" value="{{ form.salary.value|default:'' }}">
+</div>
+{% if form.salary.errors %}
+    {{ form.salary.errors }}
+{% endif %}
+<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="description" class="form-label">{{ form.description.label }}</label>
+    <textarea name="description" id="description" cols="22" rows="4">{{ form.description.value|default:'' }}</textarea>
+</div>
+{% if form.description.errors %}
+    {{ form.description.errors }}
+{% endif %}
+<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="min_years_experience" class="form-label">{{ form.min_years_experience.label }} /лет</label>
+    <input type="number" name="min_years_experience" id="min_years_experience"
+           value="{{ form.min_years_experience.value|default:'' }}">
+</div>
+{% if form.min_years_experience.errors %}
+    {{ form.min_years_experience.errors }}
+{% endif %}
+
+<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="max_years_experience" class="form-label">{{ form.max_years_experience.label }} /лет</label>
+    <input type="number" name="max_years_experience" id="max_years_experience"
+           value="{{ form.max_years_experience.value|default:'' }}">
+</div>
+{% if form.max_years_experience.errors %}
+    {{ form.max_years_experience.errors }}
+{% endif %}
+
+<div class="form-group mt-3" style="display: flex; justify-content: space-between; padding: 5px">
+    <label for="category" class="form-label">{{ form.category.label }}</label>
+    <select name="category" id="category" style="width:30%">
+        {% for item in form.category %}
+            {{ item }}
+        {% endfor %}
+    </select>
+    {% if form.category.errors %}
+        {{ form.category.errors }}
+    {% endif %}
+</div>
+<input type="hidden" name="user" value="{{ form.user.value|default:request.user }}">
+<input type="hidden" name="posted_status" value="{{ form.posted_status.value }}">
+<input type="submit" class="form-control btn-primary mt-5" value="{{ button_text }}" style="width: 35%">
+

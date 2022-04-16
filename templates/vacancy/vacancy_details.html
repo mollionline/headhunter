@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="vacancy_salary">
+            <span>з/п {{ vacancy.salary|default:'з/п не указано' }} USD</span>
+        </div>
+        <br>
+        <div class="vacancy_title">
+            <h2 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h2>
+        </div>
+        <div class="vacancy_user mt-5">
+            <a href="{% url 'profile' user.pk %}" id="vacancy_user">{{ vacancy.user.get_full_name }}</a>
+        </div>
+        <div class="vacancy_description mt-5" style="width:50%;">
+            <h6 id="vacancy_description">{{ vacancy.description }}</h6>
+        </div>
+        <div class="vacancy_experience mt-5 text-muted" style="width:50%; ">
+            <h6 id="vacancy_experience">Требуемый опыт работы: {{ vacancy.min_years_experience }} лет</h6>
+        </div>
+        <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
+            <h6 id="vacancy_updated_date"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
+        </div>
+    </div>
+    <br>
+    <div>
+        {% if request.user.id == user.id %}
+            <a href="{% url 'vacancy_update' vacancy.pk %}" class="btn btn-success">Корректировать</a>
+            <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить  </a>
+        {% endif %}
+    </div>
+{% endblock %}
