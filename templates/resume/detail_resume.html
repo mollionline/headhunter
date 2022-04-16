@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block content %}
+    <h1>Резюме</h1>
+    <h3 class="name">{{ resume.name }} {{ resume.last_name }}</h3>
+    <dl class="row">
+        <dt class="col-sm-3">Должность</dt>
+        <dd class="col-sm-9">{{ resume.position }}</dd>
+        <dt class="col-sm-3">Почта</dt>
+        <dd class="col-sm-9">{{ resume.email }}</dd>
+        <dt class="col-sm-3">Номер телефона</dt>
+        <dd class="col-sm-9">{{ resume.phone_number }}</dd>
+        <dt class="col-sm-3">Категория</dt>
+        <dd class="col-sm-9">{{ resume.category }}</dd>
+        <dt class="col-sm-3">Телеграм</dt>
+        <dd class="col-sm-9"><a href="{{ resume.telegram }}">{{ resume.telegram }}</a></dd>
+        {% if resume.salary %}
+            <dt class="col-sm-3">Ожидаемое заработная плата </dt>
+            <dd class="col-sm-9">{{ resume.salary }}</dd>
+        {% endif %}
+        {% if resume.facebook %}
+            <dt class="col-sm-3">Facebook</dt>
+            <dd class="col-sm-9"><a href="{{ resume.facebook }}">{{ resume.facebook }}</a></dd>
+        {% endif %}
+        {% if resume.linkedin %}
+            <dt class="col-sm-3">Linkedin</dt>
+            <dd class="col-sm-9"><a href="{{ resume.linkedin }}">{{ resume.linkedin }}</a></dd>
+        {% endif %}
+        {% if resume.about_me %}
+            <dt class="col-sm-3">Об о мне </dt>
+            <dd class="col-sm-9">{{ resume.about_me }}</dd>
+        {% endif %}
+    </dl>
+{% endblock %}
