@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.fields import related
 from phonenumber_field.modelfields import PhoneNumberField
@@ -35,20 +36,28 @@ class Educations(models.Model):
 
 
 class Resume(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default='1', related_name='resume_user')
-    name = models.CharField(max_length=200, null=False, verbose_name='Имя')
-    last_name = models.CharField(max_length=200, null=False, verbose_name='Фамилия')
-    email = models.EmailField(max_length=300, null=False, verbose_name='Почта')
-    position = models.CharField(max_length=500, null=False, verbose_name='Должность')
-    salary = models.CharField(max_length=500, null=True, verbose_name='Желаемая зарплата')
-    telegram = models.CharField(max_length=300, null=True, verbose_name='Телеграмм')
-    facebook = models.CharField(max_length=300, null=True, verbose_name='Facebook')
-    category = models.CharField(max_length=100, choices=CATEGORIES, verbose_name='Категорий')
-    phone = PhoneNumberField(blank=False, verbose_name='Номер телефона', region='KZ', null=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to='resume_pics', verbose_name='Фото')
-    experience = models.ManyToManyField('headhunter.Experiences', related_name='resume', blank=True)
-    education = models.ManyToManyField('headhunter.Educations', related_name='resum', blank=True)
-    about_me = models.TextField(max_length=5000, null=True, verbose_name='О себе')
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE,
+        related_name='resume_user', verbose_name='Пользователь'
+    )
+    name = models.CharField(max_length=150, verbose_name='Имя')
+    last_name = models.CharField(null=True, max_length=150, verbose_name='Фамилия')
+    position = models.CharField(max_length=200, verbose_name='Должность')
+    category = models.CharField(max_length=100, choices=CATEGORIES, verbose_name='Категория')
+    salary = models.IntegerField(
+        null=True, validators=[MaxValueValidator(1000000), MinValueValidator(1)],
+        verbose_name='Заработная плата'
+    )
+    phone_number = PhoneNumberField(region='KZ', verbose_name='Номер телефона')
+    email = models.EmailField(verbose_name='Почта')
+    telegram = models.URLField(max_length=500, verbose_name='Telegram')
+    facebook = models.URLField(max_length=500, null=True, blank=True, verbose_name='Facebook')
+    linkedin = models.URLField(max_length=500, null=True, blank=True, verbose_name='Linkedin')
+    work_experience = models.ManyToManyField('headhunter.Experiences', related_name='resume_experience', blank=True)
+    education = models.ManyToManyField('headhunter.Educations', related_name='resume_education', blank=True)
+    publication = models.BooleanField(default=False, verbose_name='Публикация резюме')
+    about_me = models.TextField(max_length=2000, null=True, verbose_name='Об о мне')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
     def __str__(self):
         return f'{self.position}'
@@ -82,4 +91,3 @@ class Message(models.Model):
     applicant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='applicant')
     text = models.CharField(max_length=3000, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
-
