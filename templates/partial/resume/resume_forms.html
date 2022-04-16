@@ -1,0 +1,150 @@
+{% csrf_token %}
+<div class="form_all">
+    <div class="box">
+        <div class="mb-3">
+            <label  for="name" class="form-label">Имя</label><span style="color: brown; padding-left: 5px;">* (Обязательно для заполнения)</span>
+            <input type="text" name="name" id="name"
+                   class="form-control {% if form.name.errors %}is-invalid{% endif %}"
+                   placeholder="Введите имя" value="{{ form.name.value| default:'' }}">
+            {% for error in form.name.errors %}
+                <p class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="last_name" class="form-label">Фамилия</label><span style="color: brown; padding-left: 5px;">*</span>
+            <input name="last_name" id="last_name"
+                   class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                   placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" >
+            {% for error in form.last_name.errors %}
+                <p class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="position" class="form-label">Должность</label><span style="color: brown; padding-left: 5px;">*</span>
+            <input type="text" name="position" id="position"
+                   class="form-control {% if form.position.errors %}is-invalid{% endif %}"
+                   placeholder="Введите должность" value="{{ form.position.value|default:'' }}">
+            {% for error in form.position.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="salary" class="form-label">Зарплата KZT</label>
+            <input value="{{ form.salary.value|default:'' }}" type="text" name="salary"
+                   class="form-control {% if form.salary.errors %}is-invalid{% endif %}" id="salary" >
+            {% for error in form.salary.errors %}
+                <p class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="email" class="form-label">Почта</label><span style="color: brown; padding-left: 5px;">*</span>
+            <input type="email" name="email" id="email"
+                   class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                   placeholder="Введите почту" value="{{ form.email.value| default:'' }}">
+            {% for error in form.email.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="box">
+        <div class="mb-3">
+            <label  for="phone_number" class="form-label">Номер телефона</label><span style="color: brown; padding-left: 5px;">*</span>
+            <input type="tel" name="phone_number" id="phone_number"
+                   class="form-control {% if form.phone_number.errors %}is-invalid{% endif %}"
+                   placeholder="Введите номер телефона" value="{{ form.phone_number.value| default:'' }}">
+            {% for error in form.phone_number.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="telegram" class="form-label">Телеграм</label><span style="color: brown; padding-left: 5px;">*</span>
+            <input type="url" name="telegram" id="telegram"
+                   class="form-control {% if form.telegram.errors %}is-invalid{% endif %}"
+                   placeholder="Введите ссылку телеграм" value="{{ form.telegram.value| default:'' }}">
+            {% for error in form.telegram.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="facebook" class="form-label">Facebook</label>
+            <input type="url" name="facebook" id="facebook"
+                   class="form-control {% if form.facebook.errors %}is-invalid{% endif %}"
+                   placeholder="Введите ссылку facebook" value="{{ form.facebook.value| default:'' }}">
+            {% for error in form.facebook.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label  for="linkedin" class="form-label">Linkedin</label>
+            <input type="url" name="linkedin" id="linkedin"
+                   class="form-control {% if form.linkedin.errors %}is-invalid{% endif %}"
+                   placeholder="Введите ссылку linkedin" value="{{ form.linkedin.value| default:'' }}">
+            {% for error in form.linkedin.errors %}
+                <p id="title" class="invalid-feedback">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Категория резюме</label>
+            <select name="category" id="category" class="form-control">
+                {{ form.category.value }}
+                {% for obj in categories %}
+                    {% if obj.0 == form.category.value %}
+                        <option selected value="{{ obj.0 }}">{{ obj.1 }}</option>
+                    {% else %}
+                        <option value="{{ obj.0 }}">{{ obj.1 }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+    <label  for="about_me" class="form-label">Об о мне</label>
+    <textarea name="about_me" id="about_me"
+              class="form-control {% if form.about_me.errors %}is-invalid{% endif %}"
+              placeholder="Расскажите о себе">{{ form.about_me.value| default:'' }}</textarea>
+    {% for error in form.about_me.errors %}
+        <p id="title" class="invalid-feedback">{{ error }}</p>
+    {% endfor %}
+</div>
+<div class="experience_place">
+    <h2>Опыт работы</h2>
+    <div id="experience">
+    </div>
+    <div class="d-none" id="myform_place">
+        <form id="myform">
+            <label  for="name_company" class="form-label">Название компаний</label>
+            <input type="text" class="form-control" id="name_company" placeholder="Введите название компаний" style="width: 50%">
+            <label  for="date" class="form-label" style="margin-top: 10px">Период работы</label>
+            <div class="date" id="date" >
+                <label  for="start_date" class="form-label">Начало</label>
+                <input type="date" id="start_date" >
+                <span>-</span>
+                <input type="date" id="end_date" >
+                <label  for="end_date" class="form-label">Конец</label>
+            </div>
+            <label  for="position" class="form-label" style="margin-top: 10px">Должность</label>
+            <input type="text" class="form-control" id="positionEx" placeholder="Введите должность" style="width: 50%">
+            <label  for="responsibilities" class="form-label" style="margin-top: 10px">Обязанности</label>
+            <textarea class="form-control" id="responsibilities" style="width: 50%"></textarea>
+            <button id="addEx" class="btn btn-primary" style="margin-top: 10px">Добавить</button>
+        </form>
+    </div>
+    <div class="sub-but">
+        <button class="btn btn-primary" id="experience-but">Добавить стаж</button>
+    </div>
+</div>
+<div class="publication">
+    <label class="form-label">Опубликовать резюме?</label>
+</div>
+<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
+    <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+    <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
+    <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+</div>
+<select multiple name="work_experience" id="work_experience" class="form-select">
+</select>
+<div class="submit">
+    <button form="form-all" type="submit" class="btn btn-danger">{% if is_edit %} Изменить {% else %} Создать {% endif %}</button>
+</div>

@@ -11,12 +11,9 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static '' %}">
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <script defer src="https://friconix.com/cdn/friconix.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'common_css/common_css.css' %}">
-    <link href="{% static 'fontawesome_free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <title>{{ title }}</title>
 </head>
 
@@ -38,5 +35,41 @@
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 {% block script %}
 {% endblock %}
+<footer></footer>
+<script type="application/javascript">
+    $.ajax({
+        url: "http://127.0.0.1:8000/api/v1/login/",
+        method: "post",
+        data: JSON.stringify({
+          username: `${localStorage.getItem("username")}`,
+          password: `${localStorage.getItem("password")}`,
+        }),
+        dataType: "json",
+        contentType: "application/json",
+        success: function (response, status) {
+          localStorage.setItem("apiToken", response.token);
+        },
+        error: function (response, status) {
+          console.log(response);
+        },
+      });
+      function logout(e) {
+        $.ajax({
+          url: "http://127.0.0.1:8000/api/v1/logout/",
+          method: "post",
+          headers: {
+            Authorization: "Token " + localStorage.getItem("apiToken"),
+          },
+          dataType: "json",
+          success: function (response, status) {
+            console.log(response);
+          },
+          error: function (response, status) {
+            console.log(response);
+          },
+        });
+      }
+      $("#logout").click(logout);
+</script>
 </body>
 </html>

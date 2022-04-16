@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'common_css/common_css.css' %}">
     <title>{{ title }}</title>
 </head>
@@ -29,5 +30,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
+<script type="application/javascript">
+    function login(e) {
+        let username = $('#username').val()
+        let password = $('#password').val()
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+    }
+  $('#login').click(login)
+</script>
 </body>
 </html>
