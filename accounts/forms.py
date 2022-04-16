@@ -37,13 +37,6 @@ class UserCreationForm(forms.ModelForm):
 
 
 class ProfileCreateForm(forms.ModelForm):
-    CHOICES = [
-            (False, 'Соискатель'),
-            (True, 'Компания')
-        ]
-    user_or_company = forms.BooleanField(label='Соискатель', required=False, widget=forms.Select(
-        choices=CHOICES
-    ))
 
     class Meta:
         model = Profile

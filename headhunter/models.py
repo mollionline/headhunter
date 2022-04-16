@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.fields import related
 from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 CATEGORIES = [
     ('Medicine', 'Медицина'),
@@ -64,13 +65,16 @@ class Resume(models.Model):
 
 
 class Vacancy(models.Model):
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='vacancy_user')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='vacancy_user')
     position = models.CharField(max_length=100, null=False, blank=False, verbose_name='Должность')
     category = models.CharField(max_length=100, choices=CATEGORIES, verbose_name='Категория')
-    salary = models.IntegerField(null=False, blank=False, verbose_name='Заработная плата')
+    salary = models.IntegerField(null=False, blank=False, verbose_name='Заработная плата',
+                                 validators=[MaxValueValidator(3000000), MinValueValidator(1), ])
     description = models.CharField(max_length=3000, null=False, blank=False, verbose_name='Описание вакансии')
-    min_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Мин кол-во лет опыта')
-    max_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Макс кол-во лет опыта')
+    min_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Мин кол-во лет опыта',
+                                               validators=[MaxValueValidator(50), MinValueValidator(0), ])
+    max_years_experience = models.IntegerField(null=False, blank=False, verbose_name='Макс кол-во лет опыта',
+                                               validators=[MaxValueValidator(50), MinValueValidator(0), ])
     posted_status = models.BooleanField(null=False, blank=False, verbose_name='Опубликовано')
     updated_at = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Дата обновления')
 

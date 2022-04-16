@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model, upd
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import DetailView, UpdateView
+from headhunter.models import Vacancy
 
 from accounts.forms import (UserCreationForm, UserChangeForm,
                             ProfileChangeForm, PasswordChangeForm,
@@ -43,16 +44,13 @@ class RegisterView(View):
     def get(self, request, *args, **kwargs):
         form = UserCreationForm()
         profile_form = ProfileCreateForm()
-        categories = ProfileCreateForm.CHOICES
         return render(request, 'registration/registration.html',
                       context={'form': form,
-                               'profile_form': profile_form,
-                               'categories': categories})
+                               'profile_form': profile_form})
 
     def post(self, request, *args, **kwargs):
         form = UserCreationForm(data=request.POST)
         profile_form = ProfileCreateForm(request.POST, request.FILES)
-        categories = ProfileCreateForm.CHOICES
         if form.is_valid() and profile_form.is_valid():
             user = form.save()
             profile = profile_form.save(commit=False)
@@ -62,14 +60,17 @@ class RegisterView(View):
             return redirect('/')
         return render(request, 'registration/registration.html',
                       context={'form': form,
-                               'profile_form': profile_form,
-                               'categories': categories})
+                               'profile_form': profile_form})
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = get_user_model()
     template_name = 'profile/profile.html'
     context_object_name = 'user_obj'
+
+    def get_context_data(self, **kwargs):
+        kwargs['vacancies'] = Vacancy.objects.all().order_by('-updated_at')
+        return super().get_context_data(**kwargs)
 
 
 class UserProfileUpdateView(UpdateView):
