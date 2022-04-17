@@ -1,0 +1,6 @@
+{% extends 'base.html' %} {% block content %}
+    <h1 >Добавить стаж</h1>
+    <form action="{% url 'experience_create' resume.pk %}" method="POST">
+        {% include 'partial/resume/experience_form.html' with is_edit=False %}
+    </form>
+{% endblock %}

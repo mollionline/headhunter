@@ -28,6 +28,7 @@ footer {
 text-align: end;
 }
 
+
 .pagination {
     text-align: center;
 }
@@ -75,4 +76,15 @@ text-align: end;
 
 .menu {
     display: block;
+}
+
+.button_edit {
+    display: flex;
+justify-content: space-between;
+margin-top: 50px;
+    width: 70%;
+    margin-bottom: 30px;
+}
+.first {
+    height: 70px;
 }

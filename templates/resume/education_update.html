@@ -1,0 +1,6 @@
+{% extends 'base.html' %} {% block content %}
+    <h1 >Редактировать образование</h1>
+    <form action="{% url 'update_education' pk=object.pk resume=resume.pk %}" method="POST">
+        {% include 'partial/resume/education_form.html' with is_edit=True %}
+    </form>
+{% endblock %}

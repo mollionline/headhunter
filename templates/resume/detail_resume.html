@@ -14,7 +14,7 @@
         <dd class="col-sm-9"><a href="{{ resume.telegram }}">{{ resume.telegram }}</a></dd>
         {% if resume.salary %}
             <dt class="col-sm-3">Ожидаемое заработная плата </dt>
-            <dd class="col-sm-9">{{ resume.salary }}</dd>
+            <dd class="col-sm-9">{{ resume.salary }} тг</dd>
         {% endif %}
         {% if resume.facebook %}
             <dt class="col-sm-3">Facebook</dt>
@@ -28,5 +28,60 @@
             <dt class="col-sm-3">Об о мне </dt>
             <dd class="col-sm-9">{{ resume.about_me }}</dd>
         {% endif %}
+        {% if resume.publication == True %}
+            <dt class="col-sm-3">Опубликован</dt>
+            <dd class="col-sm-9">Да</dd>
+        {% endif %}
+        {% if resume.publication == False %}
+            <dt class="col-sm-3">Опубликован</dt>
+            <dd class="col-sm-9">Нет</dd>
+        {% endif %}
     </dl>
+    <div class="button_edit">
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-danger">Удалить</button>
+        <a class="btn btn-info" href="{% url 'experience_create' resume.pk %}" role="button">Добавить стаж</a>
+        <a class="btn btn-info" href="{% url 'create_education' resume.pk %}" role="button">Добавить образование</a>
+        <a class="btn btn-primary" href="{% url 'update_resume' resume.pk %}" role="button">Изменить</a>
+    </div>
+    {% if resume.work_experience.count != 0 %}
+        <h2>Опыт работы</h2>
+        {% for exp in resume.work_experience.all %}
+            <div class="card" style="width: 70%; margin-bottom: 10px">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Компания</dt>
+                        <dd class="col-sm-9">{{ exp.name_company }}</dd>
+                        <dt class="col-sm-3">Должность</dt>
+                        <dd class="col-sm-9">{{ exp.position }}</dd>
+                        <dt class="col-sm-3">Период работы</dt>
+                        <dd class="col-sm-9">Начало ({{ exp.start_date }})-({{ exp.end_date }}) Конец</dd>
+                        <dt class="col-sm-3">Обязанности</dt>
+                        <dd class="col-sm-9">{{ exp.responsibilities }}</dd>
+                    </dl>
+                    <a class="btn btn-danger" href="{% url 'delete_experience' pk=exp.pk resume=resume.pk %}" role="button">Удалить</a>
+                    <a class="btn btn-primary" href="{% url 'update_experience' pk=exp.pk resume=resume.pk %}" role="button">Изменить</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if resume.education.count != 0 %}
+        <h2>Образование</h2>
+        {% for educ in resume.education.all %}
+            <div class="card" style="width: 70%; margin-bottom: 10px">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Учреждение</dt>
+                        <dd class="col-sm-9">{{ educ.institution_name }}</dd>
+                        <dt class="col-sm-3">Специальность</dt>
+                        <dd class="col-sm-9">{{ educ.speciality }}</dd>
+                        <dt class="col-sm-3">Период обучения</dt>
+                        <dd class="col-sm-9">Начало ({{ educ.start_date }})-({{ educ.end_date }}) Конец</dd>
+                    </dl>
+                    <a class="btn btn-danger" href="{% url 'delete_education' pk=educ.pk resume=resume.pk %}" role="button">Удалить</a>
+                    <a class="btn btn-primary" href="{% url 'update_education' pk=educ.pk resume=resume.pk %}" role="button">Изменить</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% include 'common/delete_modal_for_resume.html' with deleted_object=resume %}
 {% endblock %}

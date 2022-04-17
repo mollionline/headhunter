@@ -1,0 +1,51 @@
+{% csrf_token %}
+<div style="width: 70%">
+    <div class="mb-3">
+        <label  for="name_company" class="form-label">Название компаний</label>
+        <input type="text" name="name_company" id="name_company"
+               class="form-control {% if form.name_company.errors %}is-invalid{% endif %}"
+               placeholder="Введите имя компаний" value="{{ form.name_company.value| default:'' }}">
+        {% for error in form.name_company.errors %}
+            <p class="invalid-feedback">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label  for="position" class="form-label">Должность</label>
+        <input type="text" name="position" id="position"
+               class="form-control {% if form.position.errors %}is-invalid{% endif %}"
+               placeholder="Введите должность" value="{{ form.position.value| default:'' }}">
+        {% for error in form.position.errors %}
+            <p class="invalid-feedback">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label  for="start_date" class="form-label">Дата начало работы</label>
+        <input type="date" name="start_date" id="start_date"
+               class="form-control {% if form.start_date.errors %}is-invalid{% endif %}"
+               value="{{ form.start_date.value|date:'Y-m-d' | default:'' }}">
+        {% for error in form.start_date.errors %}
+            <p id="title" class="invalid-feedback">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label  for="end_date" class="form-label">Дата окончания</label>
+        <input type="date" name="end_date" id="end_date"
+               class="form-control {% if form.end_date.errors %}is-invalid{% endif %}"
+               placeholder="Введите название" value="{{ form.end_date.value|date:'Y-m-d' | default:'' }}">
+        {% for error in form.end_date.errors %}
+            <p id="title" class="invalid-feedback">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label  for="responsibilities" class="form-label">Обязанности</label>
+        <textarea name="responsibilities" id="responsibilities"
+                  class="form-control first {% if form.responsibilities.errors %}is-invalid{% endif %}"
+                  placeholder="Введите обязанности">{{ form.responsibilities.value|default:'' }}</textarea>
+        {% for error in form.responsibilities.errors %}
+            <p id="description" class="invalid-feedback">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="submit">
+        <button type="submit" class="btn btn-danger">{% if is_edit %} Изменить {% else %} Создать {% endif %}</button>
+    </div>
+</div>

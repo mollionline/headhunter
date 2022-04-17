@@ -1,0 +1,6 @@
+{% extends 'base.html' %} {% block content %}
+   <h1 >Редактировать резюме</h1>
+    <form id="form-all" action="{% url 'update_resume' object.pk %}" method="POST">
+        {% include 'partial/resume/resume_forms.html' with is_edit=True %}
+    </form>
+{% endblock %}
