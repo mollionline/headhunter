@@ -1,7 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api_v1.serializers import ExperienceSerializer
+from api_v1.serializers import ExperienceSerializer, EducationSerializer
 
 
 class LogoutView(APIView):
@@ -18,6 +18,18 @@ class ExperienceCreateView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = ExperienceSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
+
+
+class EducationCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = EducationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
