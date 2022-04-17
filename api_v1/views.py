@@ -1,7 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api_v1.serializers import ExperienceSerializer, EducationSerializer
+from headhunter.models import Vacancy, Resume
 
 
 class LogoutView(APIView):
@@ -35,3 +37,16 @@ class EducationCreateView(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=400)
+
+
+class AddResumeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        vacancy = get_object_or_404(Vacancy, pk=request.data['vacancy'])
+        resume = get_object_or_404(Resume, pk=request.data['resume'])
+        for resum in vacancy.resumes.all():
+            if resum.pk == int(request.data['resume']):
+                return Response({'error': 'Вы уже откликнулись'}, status=400)
+        vacancy.resumes.add(resume)
+        return Response({'answer': 'Откликнулись'})
