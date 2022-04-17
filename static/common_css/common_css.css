@@ -27,3 +27,13 @@ footer {
     display: block;
 text-align: end;
 }
+.button_edit {
+    display: flex;
+justify-content: space-between;
+margin-top: 50px;
+    width: 70%;
+    margin-bottom: 30px;
+}
+.first {
+    height: 70px;
+}

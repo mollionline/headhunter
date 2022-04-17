@@ -1,5 +1,11 @@
 {% csrf_token %}
 <div class="form_all">
+    {% if is_edit == False %}
+        <select multiple name="work_experience" id="work_experience" class="form-select d-none">
+        </select>
+        <select multiple name="education" id="education" class="form-select d-none">
+        </select>
+    {% endif %}
     <div class="box">
         <div class="mb-3">
             <label  for="name" class="form-label">Имя</label><span style="color: brown; padding-left: 5px;">* (Обязательно для заполнения)</span>
@@ -86,7 +92,6 @@
         <div class="mb-3">
             <label for="category" class="form-label">Категория резюме</label>
             <select name="category" id="category" class="form-control">
-                {{ form.category.value }}
                 {% for obj in categories %}
                     {% if obj.0 == form.category.value %}
                         <option selected value="{{ obj.0 }}">{{ obj.1 }}</option>
@@ -107,44 +112,101 @@
         <p id="title" class="invalid-feedback">{{ error }}</p>
     {% endfor %}
 </div>
-<div class="experience_place">
-    <h2>Опыт работы</h2>
-    <div id="experience">
+{% if is_edit == False %}
+    <div class="experience_place" style="border-bottom: 1px solid black; border-top: 1px solid black; margin-bottom: 20px">
+        <h2>Опыт работы</h2>
+        <div id="experience">
+        </div>
+        <div class="d-none" id="myform_place">
+            <form id="myform">
+                <div id="company">
+                    <label  for="name_company" class="form-label">Название компаний</label>
+                    <input type="text" class="form-control" id="name_company" placeholder="Введите название компаний" style="width: 50%">
+                </div>
+                <div id="dateEx">
+                    <label  for="date" class="form-label" style="margin-top: 10px">Период работы</label>
+                    <div class="date" id="date" >
+                        <label  for="start_date" class="form-label">Начало</label>
+                        <input type="date" id="start_date" >
+                        <span>-</span>
+                        <input type="date" id="end_date" >
+                        <label  for="end_date" class="form-label">Конец</label>
+                    </div>
+                </div>
+                <div id="posEx">
+                    <label  for="position" class="form-label" style="margin-top: 10px">Должность</label>
+                    <input type="text" class="form-control" id="positionEx" placeholder="Введите должность" style="width: 50%">
+                </div>
+                <div id="res">
+                    <label  for="responsibilities" class="form-label" style="margin-top: 10px">Обязанности</label>
+                    <textarea class="form-control" id="responsibilities" style="width: 50%"></textarea>
+                </div>
+                <button id="addEx" class="btn btn-primary" style="margin-top: 10px">Добавить</button>
+            </form>
+        </div>
+        <div class="sub-but" style="margin-bottom: 10px">
+            <button class="btn btn-primary" id="experience-but">Добавить стаж</button>
+        </div>
     </div>
-    <div class="d-none" id="myform_place">
-        <form id="myform">
-            <label  for="name_company" class="form-label">Название компаний</label>
-            <input type="text" class="form-control" id="name_company" placeholder="Введите название компаний" style="width: 50%">
-            <label  for="date" class="form-label" style="margin-top: 10px">Период работы</label>
-            <div class="date" id="date" >
-                <label  for="start_date" class="form-label">Начало</label>
-                <input type="date" id="start_date" >
-                <span>-</span>
-                <input type="date" id="end_date" >
-                <label  for="end_date" class="form-label">Конец</label>
-            </div>
-            <label  for="position" class="form-label" style="margin-top: 10px">Должность</label>
-            <input type="text" class="form-control" id="positionEx" placeholder="Введите должность" style="width: 50%">
-            <label  for="responsibilities" class="form-label" style="margin-top: 10px">Обязанности</label>
-            <textarea class="form-control" id="responsibilities" style="width: 50%"></textarea>
-            <button id="addEx" class="btn btn-primary" style="margin-top: 10px">Добавить</button>
-        </form>
+    <div class="education_place" style="border-bottom: 1px solid black; border-top: 1px solid black">
+        <h2>Образование</h2>
+        <div id="education_place">
+        </div>
+        <div class="d-none" id="form-education">
+            <form id="myform2">
+                <div id="inst">
+                    <label  for="institution_name" class="form-label">Название учреждения</label>
+                    <input type="text" class="form-control" id="institution_name" placeholder="Введите название учреждения" style="width: 50%">
+                </div>
+                <div id="dateEd">
+                    <label  for="date" class="form-label" style="margin-top: 10px">Период обучения</label>
+                    <div class="date" id="date2" >
+                        <label  for="start_date2" class="form-label">Начало</label>
+                        <input type="date" id="start_date2" >
+                        <span>-</span>
+                        <input type="date" id="end_date2" >
+                        <label  for="end_date2" class="form-label">Конец</label>
+                    </div>
+                </div>
+                <div id="spec">
+                    <label  for="speciality" class="form-label" style="margin-top: 10px">Специальность</label>
+                    <input type="text" class="form-control" id="speciality" placeholder="Введите специальность" style="width: 50%">
+                </div>
+                <button id="add_education" class="btn btn-primary" style="margin-top: 10px">Добавить</button>
+            </form>
+        </div>
+        <div class="sub-but" style="margin-bottom: 10px">
+            <button class="btn btn-primary" id="education-but">Добавить образование</button>
+        </div>
     </div>
-    <div class="sub-but">
-        <button class="btn btn-primary" id="experience-but">Добавить стаж</button>
-    </div>
-</div>
+{% endif %}
 <div class="publication">
     <label class="form-label">Опубликовать резюме?</label>
 </div>
-<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-    <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
-    <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
-    <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
-    <label class="btn btn-outline-danger" for="btnradio2">Да</label>
-</div>
-<select multiple name="work_experience" id="work_experience" class="form-select">
-</select>
+{% if is_edit == False %}
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+        <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+    </div>
+{% elif is_edit == True %}
+    {% if form.publication.value == True %}
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+        </div>
+    {% elif form.publication.value == False %}
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+        </div>
+    {% endif %}
+{% endif %}
 <div class="submit">
     <button form="form-all" type="submit" class="btn btn-danger">{% if is_edit %} Изменить {% else %} Создать {% endif %}</button>
 </div>
