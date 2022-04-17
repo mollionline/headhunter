@@ -18,7 +18,7 @@
 
 <div class="form-group">
     <textarea class="form-control {% if form.description.errors %} is-invalid {% endif %}" name="description"
-              id="description" cols="22" rows="4"
+              id="description" cols="50" rows="20"
               placeholder="{{ form.description.label }}">{{ form.description.value|default:'' }}</textarea>
     {% for error in form.description.errors %}
         <p class="invalid-feedback">{{ error }}</p>
@@ -91,13 +91,6 @@
     {% endif %}
 
 
-    {#    <select name="posted_status" id="posted_status" class="form-control">#}
-    {#        {% for choice in choices %}#}
-    {#            <option value="{{ choice.0 }}" {% if choice.0  == form.posted_status.value %}#}
-    {#                    selected#}
-    {#            {% endif %} >{{ choice.1 }} </option>#}
-    {#        {% endfor %}#}
-    {#    </select>#}
 
 </div>
 <input type="submit" class="form-control btn-primary mt-5" value="{{ button_text }}" style="width: 35%">

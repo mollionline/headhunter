@@ -1,32 +1,62 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <div class="container mt-5">
-        <h6><i>Опубликовано: {% if vacancy.posted_status %}
-            Да {% else %} Нет {% endif %} </i></h6>
-        <div class="vacancy_salary">
-            <span>з/п {{ vacancy.salary|default:'з/п не указано' }} USD</span>
+        <div class="card mb-3" style="max-width: 100%; border: none">
+            <div class="row g-0">
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vacancy.position|default:'Должность' }}</h5>
+                        <p class="card-title">{{ vacancy.salary|default:'з/п не указано' }} USD</p>
+                        <a href="" style="text-decoration: none">{{ vacancy.author }}</a>
+                        <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {% if vacancy.author.profile.avatar %}
+                        <img class="avatar" src="{{ user_obj.profile.avatar.url }}" width="250" height="250"
+                             alt="user picture" style="border-radius: 100%">
+                    {% else %}
+
+                    {% endif %}
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2">
+                            <a href="#" class="btn btn-success">Откликнуться</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <br>
-        <div class="vacancy_title">
-            <h2 id="vacancy_job_title">{{ vacancy.position|default:'Должность' }}</h2>
+        <div class="card mb-3" style="max-width: 100%; border: none">
+            <div class="row g-0">
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-title">Требуемый опыт работы: {{ vacancy.min_years_experience }} лет</p>
+
+                        <p class="card-title">{{ vacancy.description|linebreaksbr }}</p>
+                        <p class="card-text"><small class="text-muted">Дата обновления: {{ vacancy.updated_at }}</small>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
         <div class="vacancy_user mt-5">
             <a href="{% url 'profile' user.pk %}" id="vacancy_user">{{ vacancy.user.get_full_name }}</a>
         </div>
-        <div class="vacancy_description mt-5" style="width:50%;">
-            <h6 id="vacancy_description">{{ vacancy.description }}</h6>
-        </div>
-        <div class="vacancy_experience mt-5 text-muted" style="width:50%; ">
-            <h6 id="vacancy_experience">Требуемый опыт работы: {{ vacancy.min_years_experience }} лет</h6>
-        </div>
-        <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
-            <h6 id="vacancy_updated_date"><i>Дата обновления: {{ vacancy.updated_at }}</i></h6>
-        </div>
-        <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
-            <h6 id="vacancy_updated_date"><i>Опубликовано: {% if vacancy.posted_status %}
-                Да {% else %} Нет {% endif %} </i></h6>
-        </div>
+
+        {% if request.user.pk == vacancy.author.pk %}
+            <div class="vacancy_updated_date mt-5 text-muted" style="width:50%;">
+                <h6 id="vacancy_updated_date"><i>Опубликовано: {% if vacancy.posted_status %}
+                    Да {% else %} Нет {% endif %} </i></h6>
+            </div>
+        {% endif %}
     </div>
     <br>
     <div>
