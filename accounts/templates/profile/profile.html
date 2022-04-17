@@ -9,7 +9,7 @@
 
                 {% if user_obj.profile.avatar %}
                     <img class="avatar" src="{{ user_obj.profile.avatar.url }}" width="250" height="250"
-                         alt="user picture" style="border-radius: 100%">
+                         alt="user picture">
                 {% else %}
                     <img src="{% static 'images_common/empty.png' %}" alt="">
                 {% endif %}
@@ -42,8 +42,62 @@
                         </tbody>
                     </table>
                     {% if request.user.id == user_obj.id %}
-                        <a href="{% url 'update_profile' %}" style="text-decoration: none">Редактировать
-                            профиль</a>
+                        <div class="container">
+                            <div class="row row-cols-2">
+                                <div class="col">
+                                    <a href="{% url 'update_profile' %}" style="text-decoration: none">Редактировать
+                                        профиль</a>
+                                    <!-- Button trigger modal -->
+                                    <a type="button" class="btn btn-primary"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#editModal">
+                                        Редактировать
+                                        профиль
+                                    </a>
+                                </div>
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="editModal" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Редактировать
+                                                    профиль</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row row-cols-2">
+                                                    <div class="col col-6">
+                                                        <h2>Поменять личные данные</h2>
+                                                        <form style="width: 100%" action="{% url 'update_profile' %}"
+                                                              method="post" enctype="multipart/form-data">
+                                                            {% csrf_token %}
+                                                            {% include 'partial/profile_form.html' %}
+                                                            {% include 'partial/user_form.html' %}
+
+{#                                                            <input type="submit" value="Submit" class="btn btn-success">#}
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col"><a href="{% url 'change_password' %}" style="text-decoration: none">Редактировать
+                                    пароль</a></div>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>

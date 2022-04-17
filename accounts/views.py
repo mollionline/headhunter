@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import DetailView, UpdateView
 from headhunter.models import Vacancy
+from accounts.models import Profile
 
 from accounts.forms import (UserCreationForm, UserChangeForm,
                             ProfileChangeForm, PasswordChangeForm,
@@ -85,6 +86,7 @@ class UserProfileUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         if 'profile_form' not in kwargs:
             kwargs['profile_form'] = self.get_profile_form()
+            kwargs['profile'] = Profile.objects.all()
         return super().get_context_data(**kwargs)
 
     def post(self, request, *args, **kwargs):
