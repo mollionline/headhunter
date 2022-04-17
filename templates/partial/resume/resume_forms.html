@@ -112,6 +112,33 @@
         <p id="title" class="invalid-feedback">{{ error }}</p>
     {% endfor %}
 </div>
+<div class="publication">
+    <label class="form-label">Опубликовать резюме?</label>
+</div>
+{% if is_edit == False %}
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="margin-bottom: 30px">
+        <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+        <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+    </div>
+{% elif is_edit == True %}
+    {% if form.publication.value == True %}
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+        </div>
+    {% elif form.publication.value == False %}
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
+            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
+        </div>
+    {% endif %}
+{% endif %}
 {% if is_edit == False %}
     <div class="experience_place" style="border-bottom: 1px solid black; border-top: 1px solid black; margin-bottom: 20px">
         <h2>Опыт работы</h2>
@@ -180,33 +207,6 @@
         </div>
     </div>
 {% endif %}
-<div class="publication">
-    <label class="form-label">Опубликовать резюме?</label>
-</div>
-{% if is_edit == False %}
-    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
-        <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
-        <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
-        <label class="btn btn-outline-danger" for="btnradio2">Да</label>
-    </div>
-{% elif is_edit == True %}
-    {% if form.publication.value == True %}
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off">
-            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
-            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off" checked>
-            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
-        </div>
-    {% elif form.publication.value == False %}
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" value="False" class="btn-check" name="publication" id="btnradio1" autocomplete="off" checked>
-            <label class="btn btn-outline-danger" for="btnradio1">Нет</label>
-            <input type="radio" value="True" class="btn-check" name="publication" id="btnradio2" autocomplete="off">
-            <label class="btn btn-outline-danger" for="btnradio2">Да</label>
-        </div>
-    {% endif %}
-{% endif %}
-<div class="submit">
+<div class="submit" style="margin-top: 30px">
     <button form="form-all" type="submit" class="btn btn-danger">{% if is_edit %} Изменить {% else %} Создать {% endif %}</button>
 </div>
