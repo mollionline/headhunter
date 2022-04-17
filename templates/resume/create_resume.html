@@ -9,6 +9,11 @@
             e.preventDefault()
             $('#myform_place').removeClass('d-none')
         }
+        function formOpen2(e) {
+            e.preventDefault()
+            $('#form-education').removeClass('d-none')
+        }
+        $('#education-but').click(formOpen2)
         $('#experience-but').click(formOpen)
         function createEx (e) {
             e.preventDefault()
@@ -38,10 +43,75 @@
                     $('#myform_place').addClass('d-none')
                 },
                 error: function (response, status) {
-                    console.log(response);
+                    if (response.responseJSON.name_company) {
+                        $('#name_company').addClass('is-invalid')
+                        $('#company').append(`<p style="color: brown">${response.responseJSON.name_company}</p>`)
+                    }
+                    if (response.responseJSON.start_date) {
+                        $('#start_date').addClass('is-invalid')
+                        $('#dateEx').append(`<p style="color: brown">${response.responseJSON.start_date}</p>`)
+                    }
+                    if (response.responseJSON.end_date) {
+                        $('#end_date').addClass('is-invalid')
+                        $('#dateEx').append(`<p style="color: brown">${response.responseJSON.end_date}</p>`)
+                    }
+                    if (response.responseJSON.position) {
+                        $('#positionEx').addClass('is-invalid')
+                        $('#posEx').append(`<p style="color: brown">${response.responseJSON.position}</p>`)
+                    }
+                    if (response.responseJSON.responsibilities) {
+                        $('#responsibilities').addClass('is-invalid')
+                        $('#res').append(`<p style="color: brown">${response.responseJSON.responsibilities}</p>`)
+                    }
                 },
             });
         }
+        function createEducation (e) {
+            e.preventDefault()
+            let institution_name = $('#institution_name').val()
+            let start_date2 = $('#start_date2').val()
+            let end_date2 = $('#end_date2').val()
+            let speciality = $('#speciality').val()
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/education/create/",
+                method: "post",
+                headers: {
+                    Authorization: "Token " + localStorage.getItem("apiToken"),
+                },
+                data: JSON.stringify({
+                    institution_name: institution_name,
+                    start_date: start_date2,
+                    end_date: end_date2,
+                    speciality: speciality
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data, status) {
+                    $('#education_place').append(`<p>${data.institution_name}: ${data.speciality} - (${data.start_date})-(${data.end_date})</p>`)
+                    $('#education').append(`<option value="${data.id}" selected ></option>`)
+                    $('#form-education').addClass('d-none')
+                },
+                error: function (response, status) {
+                    if (response.responseJSON.institution_name) {
+                        $('#institution_name').addClass('is-invalid')
+                        $('#inst').append(`<p style="color: brown">${response.responseJSON.institution_name}</p>`)
+                    }
+                    if (response.responseJSON.start_date) {
+                        $('#start_date2').addClass('is-invalid')
+                        $('#dateEd').append(`<p style="color: brown">${response.responseJSON.start_date}</p>`)
+                    }
+                    if (response.responseJSON.end_date) {
+                        $('#end_date2').addClass('is-invalid')
+                        $('#dateEd').append(`<p style="color: brown">${response.responseJSON.end_date}</p>`)
+                    }
+                    if (response.responseJSON.speciality) {
+                        $('#speciality').addClass('is-invalid')
+                        $('#spec').append(`<p style="color: brown">${response.responseJSON.speciality}</p>`)
+                    }
+                },
+            });
+        }
+        $('#add_education').click(createEducation)
         $('#addEx').click(createEx)
     </script>
 {% endblock %}
