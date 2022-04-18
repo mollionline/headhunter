@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'common/common_nav.html' %}
+
+    <div style="display: flex; flex-wrap: wrap" class="mt-5">
+            <div class="container">
+                <div class="row row-cols-2">
+                    <div class="col-12">
+                        {% for vacancy in object_list %}
+
+                            {% if vacancy.posted_status == True %}
+
+
+                                <div class="card" style="width: 100%; margin: 5px">
+                                    <div class="card-body">
+                                        <a href="{% url 'vacancy_details' vacancy.pk %}" style="text-decoration: none">
+                                            <h5
+                                                    class="card-title">{{ vacancy.position }}</h5>
+                                        </a>
+                                        <p class="card-text">{{ vacancy.author|capfirst }}</p>
+                                        <p class="card-text">Будьте первыми</p>
+                                        <p class="card-text">{{ vacancy.description }}</p>
+                                        <a href="#" class="btn btn-primary">Откликнуться</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% empty %}
+                            <p style="text-align: center">По поиску ничего не найдено</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+    </div>
+    {% include 'common/pagination.html' %}
+{% endblock %}

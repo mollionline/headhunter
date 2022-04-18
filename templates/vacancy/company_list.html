@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'common/common_nav.html' %}
+
+    <div style="display: flex; flex-wrap: wrap" class="mt-5">
+
+        <div class="container">
+            <div class="row row-cols-2">
+
+                <div class="col-12">
+                    {% for profile in profiles %}
+                        {% if profile.user_or_company == True %}
+
+                            <div class="card" style="width: 100%; margin: 5px">
+                                <div class="card-body" style="height: 4rem">
+                                    <h5 class="card-title mt-2"><a
+                                           style="text-decoration: none" href="{% url 'profile_company' profile.user.pk %}"> {{ profile.user }} </a>
+                                    </h5>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if vacancy.posted_status == True %}
+
+
+                            <div class="card" style="width: 100%; margin: 5px">
+                                <div class="card-body">
+                                    <a href="{% url 'vacancy_details' vacancy.pk %}" style="text-decoration: none">
+                                        <h5
+                                                class="card-title">{{ vacancy.author }}</h5>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {% include 'common/pagination.html' %}
+{% endblock %}

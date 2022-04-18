@@ -1,11 +1,14 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.generic import ListView, DetailView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView, View
 
 from headhunter.forms.vacancy_forms import VacancyForm
 from headhunter.models import Vacancy, Resume, CATEGORIES
 from headhunter.helpers import FormView as CustomFormView
+from accounts.models import Profile
 
 
 class VacancyListView(ListView):
@@ -13,7 +16,7 @@ class VacancyListView(ListView):
     model = Vacancy
     ordering = ('-updated_at',)
     context_object_name = 'vacancies'
-    paginate_by = 6
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs['resumes'] = Resume.objects.all()
@@ -26,6 +29,7 @@ class VacancyDetailsView(DetailView):
     model = Vacancy
 
     def get_context_data(self, **kwargs):
+        kwargs['categories'] = CATEGORIES
         return super().get_context_data(**kwargs, form=VacancyForm())
 
 
@@ -78,3 +82,66 @@ class VacancyDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('vacancy_list')
+
+
+class CompanyListView(ListView):
+    template_name = 'vacancy/company_list.html'
+    model = Profile
+    ordering = ('user',)
+    context_object_name = 'profiles'
+    paginate_by = 6
+
+
+class CompanyProfileView(LoginRequiredMixin, DetailView):
+    model = get_user_model()
+    template_name = 'vacancy/company.html'
+    context_object_name = 'user_obj'
+
+    def get_context_data(self, **kwargs):
+        kwargs['vacancies'] = Vacancy.objects.all().order_by('-updated_at')
+        kwargs['resumes'] = Resume.objects.all().order_by('-updated_at')
+        return super().get_context_data(**kwargs)
+
+
+class SearchResultsListView(ListView):
+    model = Vacancy
+    template_name = 'vacancy/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search')
+        object_list = Vacancy.objects.filter(
+            Q(position__istartswith=query)
+        ).order_by('-updated_at')
+        return object_list
+
+
+class SearchCategoryListView(ListView):
+    model = Vacancy
+    template_name = 'vacancy/search_results.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['categories'] = CATEGORIES
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_cat')
+        object_list = Vacancy.objects.filter(
+            Q(category__icontains=query)
+        ).order_by('-updated_at')
+        return object_list
+
+
+class SearchMoneyListView(ListView):
+    model = Vacancy
+    template_name = 'vacancy/search_results.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['categories'] = CATEGORIES
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_val')
+        object_list = Vacancy.objects.filter(
+            Q(salary__istartswith=query)
+        ).order_by('-updated_at')
+        return object_list

@@ -1,55 +1,98 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-sm">
-
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <form class="d-flex" style="width: 80%">
-                                <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search">
-                                <button class="btn btn-primary" type="submit">Найти</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-1"><a href="{% url 'vacancy_list' %}" class="btn btn-light">Вакансии</a></div>
-                    <div class="col-1"><a href="" class="btn btn-light">Резюме</a></div>
-                    <div class="col-1"><a href="" class="btn btn-light">Компании</a></div>
-                </div>
-            </div>
-        </div>
-    </nav>
+{% include 'common/common_nav.html' %}
 
     <div style="display: flex; flex-wrap: wrap" class="mt-5">
         {% if request.user.profile.user_or_company == True %}
             {% for resume in resumes %}
-                <p style="color: red">{{ resume.position }}</p>
+                {% if resume.publication == True %}
+                    <div class="card" style="width: 100%; margin: 5px">
+                        <div class="card-body">
+                            <a href="{% url 'detail_resume' resume.pk %}" style="text-decoration: none">
+                                <h5
+                                        class="card-title">{{ resume.position }}</h5>
+                            </a>
+                            <p class="card-text">Опубликовано: {% if resume.publication == False %} Нет {% else %} Да
+                            {% endif %}</p>
+                            <p class="card-text">{{ resume.user|capfirst }}</p>
+                            <p class="card-text">{{ resume.salary }}</p>
+                            <p class="card-text">{{ resume.work_experience.all.last }}</p>
+                            <p class="card-text">{{ resume.education.all.last }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
 
             {% endfor %}
         {% else %}
             <div class="container">
                 <div class="row row-cols-2">
-                    <div class="col-2">
+                    <div class="col-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Active</a>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat"
+                                           value="Medicine">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat" value="Production">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat" value="Information technology">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat" value="Marketing">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat" value="Sales">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_category' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_cat" value="Other">
+                                </form>
+                                <p>Уровень дохода от $</p>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_money' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_val" value="1000">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_money' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_val" value="2000">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_money' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_val" value="3000">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_money' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_val" value="5000">
+                                </form>
+                                <form class="d-flex" style="width: 80%" action="{% url 'search_money' %}"
+                                      method="GET">
+                                    <input class="form-control me-2" type="submit" placeholder="Поиск"
+                                           aria-label="Search" name="search_val" value="10000">
+                                </form>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                            </li>
+
                         </ul>
                     </div>
-                    <div class="col-10">
+                    <div class="col-9">
                         {% for vacancy in vacancies %}
 
                             {% if vacancy.posted_status == True %}
@@ -64,7 +107,6 @@
                                         <p class="card-text">{{ vacancy.author|capfirst }}</p>
                                         <p class="card-text">Будьте первыми</p>
                                         <p class="card-text">{{ vacancy.description }}</p>
-                                        <a href="#" class="btn btn-primary">Откликнуться</a>
                                     </div>
                                 </div>
                             {% endif %}

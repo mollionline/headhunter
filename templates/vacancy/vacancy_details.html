@@ -8,6 +8,11 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">{{ vacancy.position|default:'Должность' }}</h5>
+                        {% for category in categories %}
+                            {% if category.0 == vacancy.category  %}
+                                 {{ category.1 }}
+                            {% endif %}
+                        {% endfor %}
                         <p class="card-title">{{ vacancy.salary|default:'з/п не указано' }} USD</p>
                         <a href="" style="text-decoration: none">{{ vacancy.author }}</a>
                         <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>

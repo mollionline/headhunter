@@ -60,14 +60,13 @@
         </div>
     </div>
 
-    {% if request.user.profile.user_or_company == True %}
-        Ваши вакансии
-        {% for vacancy in vacancies %}
-            {% if request.user == vacancy.author %}
+
+
+    {% for vacancy in vacancies %}
+        {% if user_obj.profile.user == vacancy.author %}
+            {% if  vacancy.posted_status %}
                 <div class="card" style="width: 100%; margin: 5px">
                     <div class="card-body" style="height: 13rem">
-                        <h6><i>Опубликовано: {% if vacancy.posted_status %}
-                            Да {% else %} Нет {% endif %} </i></h6>
                         <h5 class="card-title mt-2">Открытая позиция: {{ vacancy.position }} </h5>
                         <p class="card-text mt-2">Требуемый опыт: {{ vacancy.min_years_experience }} лет</p>
                         <p class="card-text mt-2">З/П: {{ vacancy.salary }} USD</p>
@@ -77,31 +76,9 @@
                 </div>
             {% endif %}
 
-        {% endfor %}
-
-    {% else %}
-        {% for resume in resumes %}
-
-                {% if request.user == resume.user %}
-                    <div class="card" style="width: 100%; margin: 5px">
-                        <div class="card-body">
-                            <a href="{% url 'detail_resume' resume.pk %}" style="text-decoration: none">
-                                <h5
-                                        class="card-title">{{ resume.position }}</h5>
-                            </a>
-                            <p class="card-text">Опубликовано: {% if resume.publication == False %} Нет {% else %} Да
-                            {% endif %}</p>
-                            <p class="card-text">{{ resume.user|capfirst }}</p>
-                            <p class="card-text">{{ resume.salary }}</p>
-                            <p class="card-text">{{ resume.work_experience.all.last }}</p>
-                            <p class="card-text">{{ resume.education.all.last }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-
-        {% endfor %}
+        {% endif %}
+    {% endfor %}
 
 
-    {% endif %}
 
 {% endblock %}
