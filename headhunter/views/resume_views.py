@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse, get_object_or_404
-from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
+from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
 
 from headhunter.forms.resume_forms import ResumeForm, ResumeUpdateForm, ExperienceUpdateForm, EducationUpdateForm
 from headhunter.models import Resume, CATEGORIES, Experiences, Educations
@@ -129,7 +129,7 @@ class ExperienceCreateView(CreateView):
             resume.work_experience.add(experience)
             url = (reverse('detail_resume', kwargs={'pk': resume.pk}))
             return HttpResponseRedirect(url)
-        return render(request, self.template_name, context={'form': form})
+        return render(request, self.template_name, context={'form': form, 'resume': resume})
 
 
 class EducationCreateView(CreateView):
@@ -155,4 +155,12 @@ class EducationCreateView(CreateView):
             resume.education.add(education)
             url = (reverse('detail_resume', kwargs={'pk': resume.pk}))
             return HttpResponseRedirect(url)
-        return render(request, self.template_name, context={'form': form})
+        return render(request, self.template_name, context={'form': form, 'resume': resume})
+
+
+class ResumeListView(ListView):
+    template_name = 'resume/resume_list.html'
+    model = Resume
+    ordering = ('-updated_at',)
+    context_object_name = 'resumes'
+    paginate_by = 6

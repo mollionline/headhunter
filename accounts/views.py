@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model, upd
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import DetailView, UpdateView
-from headhunter.models import Vacancy
+from headhunter.models import Vacancy, Resume
 from accounts.models import Profile
 
 from accounts.forms import (UserCreationForm, UserChangeForm,
@@ -71,6 +71,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         kwargs['vacancies'] = Vacancy.objects.all().order_by('-updated_at')
+        kwargs['resumes'] = Resume.objects.all().order_by('-updated_at')
         return super().get_context_data(**kwargs)
 
 
@@ -115,7 +116,7 @@ class UserProfileUpdateView(UpdateView):
         return ProfileChangeForm(**form_kwargs)
 
     def get_success_url(self):
-        return reverse('profile', kwargs={'pk': self.object.pk})
+        return reverse('logout')
 
 
 class ChangePasswordView(LoginRequiredMixin, UpdateView):
@@ -129,7 +130,7 @@ class ChangePasswordView(LoginRequiredMixin, UpdateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('profile', kwargs={'pk': self.object.pk})
+        return reverse('logout')
 
     def get_object(self, queryset=None):
         return self.model.objects.get(id=self.request.user.id)

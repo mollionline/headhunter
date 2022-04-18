@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-sm">
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <form class="d-flex" style="width: 80%" action="{% url 'search_results' %}" method="GET">
+                            <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search"
+                                   name="search">
+                            <button class="btn btn-primary" type="submit">Найти</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1"><a href="{% url 'vacancy_list' %}" class="btn btn-light">Вакансии</a></div>
+                <div class="col-1"><a href="{% url 'resume_list' %}" class="btn btn-light">Резюме</a></div>
+                <div class="col-1"><a href="{% url 'company_list' %}" class="btn btn-light">Компании</a></div>
+            </div>
+        </div>
+    </div>
+</nav>

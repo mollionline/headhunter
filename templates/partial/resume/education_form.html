@@ -20,7 +20,7 @@
     </div>
     <div class="mb-3">
         <label  for="start_date" class="form-label">Дата начало работы</label>
-        <input type="date" name="start_date" id="start_date"
+        <input type="date" required name="start_date" id="start_date"
                class="form-control {% if form.start_date.errors %}is-invalid{% endif %}"
                value="{{ form.start_date.value|date:'Y-m-d' | default:'' }}">
         {% for error in form.start_date.errors %}
@@ -29,7 +29,7 @@
     </div>
     <div class="mb-3">
         <label  for="end_date" class="form-label">Дата окончания</label>
-        <input type="date" name="end_date" id="end_date"
+        <input type="date" required name="end_date" id="end_date"
                class="form-control {% if form.end_date.errors %}is-invalid{% endif %}"
                placeholder="Введите название" value="{{ form.end_date.value|date:'Y-m-d' | default:'' }}">
         {% for error in form.end_date.errors %}
