@@ -1,32 +1,40 @@
 .form_all {
     margin-top: 30px;
-display: flex;
+    display: flex;
     justify-content: space-between;
 }
+
 .box {
     width: 48%;
 }
+
 .submit {
     display: flex;
-justify-content: right;
+    justify-content: right;
 }
+
 h1 {
     text-align: center;
     margin-top: 30px;
 }
+
 footer {
     height: 200px;
 }
+
 .name {
     margin-bottom: 30px;
 }
+
 .publication {
     margin-top: 30px;
 }
+
 .sub-but {
     display: block;
-text-align: end;
+    text-align: end;
 }
+
 
 .pagination {
     text-align: center;
@@ -75,4 +83,21 @@ text-align: end;
 
 .menu {
     display: block;
+}
+
+.button_edit {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    width: 70%;
+    margin-bottom: 30px;
+}
+
+.first {
+    height: 70px;
+}
+
+.resum {
+    text-decoration: none;
+    color: black;
 }

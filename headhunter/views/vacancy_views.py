@@ -19,7 +19,7 @@ class VacancyListView(ListView):
     paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs['resumes'] = Resume.objects.all()
+        kwargs['resumes'] = Resume.objects.all().order_by('-updated_at')
         return super().get_context_data(**kwargs)
 
 
