@@ -144,6 +144,6 @@ class SearchMoneyListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('search_val')
         object_list = Vacancy.objects.filter(
-            Q(salary__istartswith=query)
+            Q(salary__lte=query)
         ).order_by('-updated_at')
         return object_list
