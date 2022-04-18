@@ -24,8 +24,9 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-2">
-                            <a href="#" class="btn btn-success">Откликнуться</a>
+                            <button id="addBtn" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Откликнуться</button>
                         </div>
+                        <div id="place"></div>
                     </div>
                 </div>
 
@@ -59,10 +60,78 @@
         {% endif %}
     </div>
     <br>
-    <div>
+    <div style="margin-bottom: 30px">
         {% if request.user.pk == vacancy.author.pk %}
             <a href="{% url 'vacancy_update' vacancy.pk %}" class="btn btn-success">Корректировать</a>
             <a href="{% url 'vacancy_delete' vacancy.pk %}" class="btn btn-danger">Удалить </a>
         {% endif %}
     </div>
+    {% if request.user.pk == vacancy.author.pk %}
+        <div>
+            <h2>Резюме которые откликнулись</h2>
+            {% for resum in vacancy.resumes.all %}
+                <div class="card" style="margin-bottom: 30px; width: 70%">
+                    <div class="card-body">
+                        <a class="resum" href="{% url 'detail_resume' resum.pk %}">
+                            <dl class="row">
+                                <dt class="col-sm-3">ФИО</dt>
+                                <dd class="col-sm-9">{{ resum.name }} {{ resum.last_name }}</dd>
+                                <dt class="col-sm-3">Должность</dt>
+                                <dd class="col-sm-9">{{ resum.position }}</dd>
+                            </dl>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Выберите резюме</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% for resume in resumes %}
+                        <div>
+                            <button id="{{ resume.pk }}" data-bs-dismiss="modal" type="button" onclick="addResume(event)" data-name="{{ vacancy.pk }}" value="{{ resume.pk }}" class="btn btn-light">{{ resume.position }}</button>
+                        </div>
+                    {% empty %}
+                        <p>У вас нет резюме</p>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+        function addResume(event) {
+            event.preventDefault()
+            let vacancy = event.target.dataset.name
+            let resume = event.target.value
+            let name = event.target.innerText
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/v1/add/resume/",
+                method: "post",
+                headers: {
+                    Authorization: "Token " + localStorage.getItem("apiToken"),
+                },
+                data: JSON.stringify({
+                    vacancy: vacancy,
+                    resume: resume
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data, status) {
+                    $('#place').html(`<p style="color: limegreen">Вы откликнулись на вакансию с резюме ${name}`)
+                },
+                error: function (response, status) {
+                    $('#place').html(`<p style="color: red">Вы уже откликнулись этой резюме`)
+                }
+            })
+        }
+    </script>
 {% endblock %}

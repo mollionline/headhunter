@@ -77,6 +77,7 @@ class Vacancy(models.Model):
                                                validators=[MaxValueValidator(50), MinValueValidator(0), ])
     posted_status = models.BooleanField(null=False, blank=False, verbose_name='Опубликовано')
     updated_at = models.DateTimeField(auto_now_add=True, blank=True, verbose_name='Дата обновления')
+    resumes = models.ManyToManyField('headhunter.Resume', related_name='vacancy_resume', blank=True)
 
 
 class Respond(models.Model):
